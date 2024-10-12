@@ -1,4 +1,4 @@
-
+import sql_helper as DBInserter
 suits = ["H","S","C","D"]
 numbers = ['A', 'K', 'Q', 'J', '10', '9', '8', '7', '6', '5', '4', '3', '2']
 
@@ -73,7 +73,7 @@ def generate_straight_flushes_ordered(rank_counter = 1):
             hand_nums = numbers[idx:idx+5]
         for suit in suits:
             hand = [suit+hand_num for hand_num in hand_nums]
-            print(rank_counter,hand)
+            DBInserter.insertHandsIntoDBase(rank_counter,hand)
             # rank_counter += 1
         rank_counter += 1
     return rank_counter
@@ -86,7 +86,7 @@ def generate_four_of_a_kind(rank_counter):
                 kicker_card = suit+kicker
                 if kicker_card not in hand:
                     hand.append(kicker_card)
-                    print(rank_counter,hand)
+                    DBInserter.insertHandsIntoDBase(rank_counter,hand)
                     del hand[-1]
                     # rank_counter += 1
             rank_counter += 1
@@ -105,7 +105,7 @@ def generate_full_house(rank_counter):
                         hand = []
                         hand.extend(triple_hand)
                         hand.extend(pair_hand)
-                        print(rank_counter,hand)
+                        DBInserter.insertHandsIntoDBase(rank_counter,hand)
                         # rank_counter += 1
                     rank_counter += 1
     return rank_counter
@@ -117,7 +117,7 @@ def generate_flush(rank_counter):
         if not (end_idx-start_idx == 4 or (card_nums == ['A','5','4','3','2'])):
             for suit in suits:
                 hand = [suit+num for num in card_nums]
-                print(rank_counter,hand)
+                DBInserter.insertHandsIntoDBase(rank_counter,hand)
                 # rank_counter += 1
             rank_counter += 1
     return rank_counter
@@ -136,7 +136,7 @@ def generate_straight(rank_counter):
                         for s5 in suits:
                             if not (s1 == s2 == s3 == s4 == s5):
                                 hand = [s1+hand_nums[0], s2+hand_nums[1], s3+hand_nums[2], s4+hand_nums[3], s5+hand_nums[4]]
-                                print(rank_counter,hand)
+                                DBInserter.insertHandsIntoDBase(rank_counter,hand)
                                 # rank_counter += 1
         rank_counter += 1
     return rank_counter
@@ -153,7 +153,7 @@ def generate_three_of_a_kind(rank_counter):
                             hand = []
                             hand.extend(triple_hand)
                             hand.extend(other_two_hand)
-                            print(rank_counter,hand)
+                            DBInserter.insertHandsIntoDBase(rank_counter,hand)
                             # rank_counter += 1
                     rank_counter += 1
     return rank_counter
@@ -170,7 +170,7 @@ def generate_two_pair(rank_counter):
                             hand = []
                             hand.extend(two_pair_hand)
                             hand.append(kicker)
-                            print(rank_counter,hand)
+                            DBInserter.insertHandsIntoDBase(rank_counter,hand)
                             # rank_counter += 1
                         rank_counter += 1
     return rank_counter
@@ -188,7 +188,7 @@ def generate_pair(rank_counter):
                                 hand = []
                                 hand.extend(pair_hand)
                                 hand.extend(other_three_hand)
-                                print(rank_counter,hand)
+                                DBInserter.insertHandsIntoDBase(rank_counter,hand)
                     rank_counter += 1 
     return rank_counter
 
@@ -204,7 +204,7 @@ def generate_high_card(rank_counter):
                             for s5 in suits:
                                 if not (s1 == s2 == s3 == s4 == s5):
                                     hand = [s1+card_nums[0], s2+card_nums[1], s3+card_nums[2], s4+card_nums[3], s5+card_nums[4]]
-                                    print(rank_counter,hand)
+                                    DBInserter.insertHandsIntoDBase(rank_counter,hand)
             rank_counter += 1
     return rank_counter
 
@@ -225,6 +225,8 @@ rank = generate_two_pair(rank)
 rank = generate_pair(rank)
 # rank = 1
 rank = generate_high_card(rank)
+DBInserter.commiter()
+print("Finish")
 print("Final Rank: ",rank)
 # for i in range(2):
 #     L = choose_lst(["H","S","C","D"],2,[],[])
